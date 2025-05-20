@@ -2,111 +2,42 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>东方Project音乐播放器</title>
-  <!-- 引入 Amplitude.js 和 Markdown 解析库 -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/amplitudejs/5.3.2/amplitude.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/15.0.7/marked.min.js"></script>
-  <!-- 样式表 -->
-  <link rel="stylesheet" href="style.css">
+  <title> 音乐播放器 </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- 引入 Amplitude.js -->
+  <script src="https://cdn.jsdelivr.net/npm/amplitudejs@5.3.2/dist/amplitude.js"></script>
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <!-- 背景元素 -->
-  <div id="background">
-    <!-- 红月 -->
-    <div class="moon"></div>
-    <!-- 飞舞的蝙蝠 -->
-    <div class="bat">
-      <!-- 简单蝙蝠 SVG 形状 -->
-      <svg viewBox="0 0 80 40" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,20 Q20,0 40,20 Q60,0 80,20 L60,10 L40,20 L20,10 Z" fill="var(--button-color)"/>
-      </svg>
+  <div class="player">
+    <!-- 专辑封面 -->
+    <img class="cover-art" data-amplitude-song-info="cover_art_url" alt="封面">
+    <!-- 歌曲信息 -->
+    <div class="song-info">
+      <h2 data-amplitude-song-info="name"></h2>
+      <h3 data-amplitude-song-info="artist"></h3>
     </div>
-    <!-- 星空（示例散点星星） -->
-    <div class="star" style="top: 15%; left: 25%; animation-duration: 2s;"></div>
-    <div class="star" style="top: 40%; left: 70%; animation-duration: 4s;"></div>
-    <div class="star" style="top: 65%; left: 50%; animation-duration: 3s;"></div>
-    <!-- 可根据需要添加更多星星元素 -->
-  </div>
-
-  <!-- 播放器主体 -->
-  <div id="player-container">
-    <!-- 主题切换按钮 -->
-    <button id="themeToggle" title="切换昼夜主题">
-      <!-- 简单太阳图标 -->
-      <svg viewBox="0 0 24 24" width="24" height="24">
-        <circle cx="12" cy="12" r="5" fill="#FFD54F"/>
-        <line x1="12" y1="1" x2="12" y2="4" stroke="#FFD54F" stroke-width="2"/>
-        <line x1="12" y1="20" x2="12" y2="23" stroke="#FFD54F" stroke-width="2"/>
-        <line x1="4" y1="12" x2="1" y2="12" stroke="#FFD54F" stroke-width="2"/>
-        <line x1="23" y1="12" x2="20" y2="12" stroke="#FFD54F" stroke-width="2"/>
-      </svg>
-    </button>
-
-    <!-- 封面旋转效果 -->
-    <div class="cover"></div>
-
-    <!-- 歌曲信息（Amplitude 绑定显示） -->
-    <div id="songInfo">
-      <span amplitude-song-info="name"></span> - <span amplitude-song-info="artist"></span>
-    </div>
-
-    <!-- 控制按钮 -->
+    <!-- 播放控制 -->
     <div class="controls">
-      <!-- 上一曲 -->
-      <button class="amplitude-prev" title="上一曲">
-        <!-- 左向双箭头图标 -->
-        <svg viewBox="0 0 50 24" width="40" height="24">
-          <polygon points="20,12 40,2 40,22" fill="var(--button-color)"/>
-          <polygon points="0,12 20,2 20,22" fill="var(--button-color)"/>
-        </svg>
-      </button>
-      <!-- 播放/暂停（切换图标） -->
-      <button id="playPause" class="amplitude-play-pause" title="播放 / 暂停">
-        <!-- 播放图标 -->
-        <svg class="icon-play" viewBox="0 0 24 24" width="30" height="30">
-          <polygon points="6,4 20,12 6,20" fill="var(--button-color)"/>
-        </svg>
-        <!-- 暂停图标 -->
-        <svg class="icon-pause" viewBox="0 0 24 24" width="30" height="30" style="display:none;">
-          <rect x="6" y="4" width="4" height="16" fill="var(--button-color)"/>
-          <rect x="14" y="4" width="4" height="16" fill="var(--button-color)"/>
-        </svg>
-      </button>
-      <!-- 下一曲 -->
-      <button class="amplitude-next" title="下一曲">
-        <!-- 右向双箭头图标 -->
-        <svg viewBox="0 0 50 24" width="40" height="24">
-          <polygon points="0,2 20,12 0,22" fill="var(--button-color)"/>
-          <polygon points="20,2 40,12 20,22" fill="var(--button-color)"/>
-        </svg>
-      </button>
-      <!-- 静音按钮 -->
-      <button id="mute" class="amplitude-mute amplitude-not-muted" title="静音 / 解除静音">
-        <!-- 扬声器图标 -->
-        <svg class="icon-volume" viewBox="0 0 24 24" width="24" height="24">
-          <polygon points="3,9 9,9 13,5 13,19 9,15 3,15" fill="var(--button-color)"/>
-          <path d="M15 8 A3 3 0 0 1 15 16" stroke="var(--button-color)" stroke-width="2" fill="none"/>
-          <path d="M17 5 A5 5 0 0 1 17 19" stroke="var(--button-color)" stroke-width="2" fill="none"/>
-        </svg>
-      </button>
-      <!-- 音量滑动条 -->
-      <input type="range" class="amplitude-volume-slider" title="音量" />
-      <!-- 歌词显示切换 -->
-      <button id="toggleLyrics" title="歌词开关">
-        <!-- 简单音乐符号图标 -->
-        <svg viewBox="0 0 24 24" width="24" height="24">
-          <path d="M12 3v10.55A4 4 0 102 14.92V5h4V3h6z" fill="var(--button-color)"/>
-        </svg>
-      </button>
+      <span class="amplitude-prev"></span>
+      <span class="amplitude-play-pause"></span>
+      <span class="amplitude-next"></span>
+    </div>
+    <!-- 播放进度 -->
+    <div class="progress">
+      <span data-amplitude-current-time>0:00</span>
+      <input type="range" class="amplitude-song-slider" step="0.1"/>
+      <span data-amplitude-duration>0:00</span>
+    </div>
+    <!-- 音量控制 -->
+    <div class="volume">
+      <label for="volume-slider">音量</label>
+      <input id="volume-slider" type="range" class="amplitude-volume-slider" min="0" max="100" value="50"/>
     </div>
   </div>
 
-  <!-- 歌词面板（毛玻璃风格） -->
-  <div id="lyricsPanel">
-    <div id="lyricsContent"></div>
-  </div>
-
-  <!-- 播放器逻辑脚本 -->
-  <script src="player.js"></script>
+  <!-- 播放器逻辑 -->
+  <script src="js/player.js"></script>
 </body>
 </html>
