@@ -1,154 +1,217 @@
-/* 基本布局 */
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%; height: 100%;
-  background: #220000;  /* 暗红色背景 */
-  color: #f0f0f0;
-  overflow: hidden;
-  font-family: sans-serif;
+/* CSS Variables for Theme Colors */
+:root {
+  --bg-color: #0a0a0a;
+  --panel-color: #111111;
+  --accent-deep-red: #8b0000;
+  --accent-light-red: #b22222;
+  --accent-gold: #ffd700;
+  --text-light: #f0f0f0;
+  --noise-opacity: 0.05;
 }
 
-/* 播放器容器 */
-#player {
-  position: relative;
-  z-index: 10;
+/* Global Styles */
+body {
+  margin: 0;
+  font-family: "Helvetica Neue", sans-serif;
+  color: var(--text-light);
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: 
+    url('images/starfield.png') center/cover no-repeat,
+    url('images/noise.png') repeat,
+    var(--bg-color);
+}
+
+/* Player Container */
+.player {
+  position: relative;
+  background: var(--panel-color);
+  padding: 20px;
+  border: 2px solid var(--accent-deep-red);
+  border-radius: 16px;
+  box-shadow:
+    0 0 8px var(--accent-deep-red),
+    inset 0 0 6px rgba(255,255,255,0.1);
+  overflow: hidden;
+  width: 320px;
+  text-align: center;
+}
+
+/* Red Moon & Bat Silhouette Decorations */
+.player::before,
+.player::after {
+  content: "";
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background: url('images/red-moon.png') no-repeat center/contain;
+  opacity: 0.2;
+}
+.player::before { top: -20px; left: -20px; transform: rotate(-15deg); }
+.player::after  { bottom: -20px; right: -20px; transform: rotate(20deg); }
+
+/* Album Cover Styles */
+.cover-art {
+  position: relative;
+  width: 100%;
+  border: 1px solid var(--accent-light-red);
+  border-radius: 8px;
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.7);
+  margin-bottom: 12px;
+  animation: float 6s ease-in-out infinite;
+}
+.cover-art::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.6) 100%);
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+/* Song Information & Separator */
+.song-info {
+  margin-bottom: 8px;
+  position: relative;
+}
+.song-info::after {
+  content: "";
+  display: block;
+  width: 60%;
+  height: 1px;
+  background: var(--accent-gold);
+  margin: 6px auto 0;
+  opacity: 0.6;
+}
+.song-info h2 {
+  margin: 5px 0;
+  font-size: 1.2rem;
+  color: var(--accent-light-red);
+}
+.song-info h3 {
+  margin: 2px 0;
+  font-size: 1rem;
+  color: var(--accent-gold);
+  font-weight: normal;
+}
+
+/* Control Buttons */
+.controls span {
+  position: relative;
+  display: inline-block;
+  margin: 0 10px;
+  width: 32px;
+  height: 32px;
+  background: var(--accent-deep-red);
+  border-radius: 4px;
+  line-height: 32px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+}
+.controls span:hover {
+  background: var(--accent-light-red);
+  transform: translateY(-2px);
+  box-shadow: 0 0 8px var(--accent-deep-red);
+}
+.controls span::before {
+  font-size: 1.1rem;
+  line-height: 32px;
+  color: var(--accent-gold);
+  text-shadow: 0 0 4px rgba(255,215,0,0.8);
+}
+.controls span.bat-wing::after {
+  content: url('images/bat-wing.svg');
+  position: absolute;
+  top: -6px; right: -6px;
+  width: 16px;
+  height: 16px;
+  opacity: 0.4;
+}
+
+/* Pseudo-content for Icons */
+.amplitude-play-pause::before { content: "▶"; }
+.amplitude-play-pause.amplitude-playing::before { content: "⏸"; }
+.amplitude-prev::before { content: "⏮"; }
+.amplitude-next::before { content: "⏭"; }
+
+/* Progress & Time Display */
+.progress {
+  margin: 10px 0;
+  display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 100%;
+  font-size: 0.9rem;
 }
-
-/* 控制按钮组 */
-.controls {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 20px;
+.progress input[type="range"] {
+  -webkit-appearance: none;
+  height: 4px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 2px;
+  flex: 1;
+  margin: 0 5px;
 }
-
-.control-button {
-  width: 50px; height: 50px;
-  background: none;
-  border: none;
-  fill: #f0eae0;  /* 图标填充色 */
+.progress input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  background: var(--accent-gold);
+  border: 2px solid var(--accent-deep-red);
+  border-radius: 50%;
+  margin-top: -5px;
   transition: transform 0.2s;
-  cursor: pointer;
 }
-.control-button:hover {
+.progress input[type="range"]::-webkit-slider-thumb:hover {
   transform: scale(1.2);
 }
 
-/* 图标SVG可以直接内嵌或作为背景图 */
-
-
-/* 装饰元素 */
-.decorative-moon {
-  position: absolute;
-  top: 20px; right: 20px;
-  width: 100px; height: 100px;
-  background: radial-gradient(circle at 50% 50%, #550000 60%, #220000);
+/* Volume Slider */
+.volume {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+.volume label { margin-right: 5px; }
+.volume input[type="range"] {
+  width: 100px;
+  -webkit-appearance: none;
+  height: 4px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 2px;
+}
+.volume input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  background: var(--accent-gold);
+  border: 2px solid var(--accent-deep-red);
   border-radius: 50%;
-  box-shadow: 0 0 20px rgba(85,0,0,0.6);
-  animation: moonFloat 10s ease-in-out infinite;
+  margin-top: -5px;
+  transition: transform 0.2s;
 }
-@keyframes moonFloat {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(15px); }
-}
-
-.decorative-bat {
-  position: absolute;
-  top: 20px; left: 20px;
-  width: 80px; height: auto;
-  fill: #330000;
-  transform: rotate(45deg);
-  animation: batFly 20s linear infinite;
-}
-@keyframes batFly {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-100vw); }
+.volume input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
 }
 
-/* 背景层 */
-.background {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: #0b0010;  /* 深黑紫色底层 */
-  overflow: hidden;
-  z-index: -10;
+/* Cover Floating Animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
 }
 
-/* 星空背景层（可使用含星点的PNG/SVG） */
-.background-stars {
-  position: absolute;
-  width: 200%; height: 200%;
-  background: url("starfield.png") repeat;
-  animation: starsMove 60s linear infinite;
-}
-@keyframes starsMove {
-  from { transform: translate(0, 0); }
-  to { transform: translate(-50%, -50%); }
-}
-
-/* 噪点纹理覆盖层 */
-.background-noise {
-  position: absolute;
-  width: 100%; height: 100%;
-  background: url("noise.png") repeat;
-  opacity: 0.15;
-  pointer-events: none;
-  mix-blend-mode: overlay;
-}
-
-/* 视差层（示例，可用于前景元素） */
-.parallax-wrap {
-  position: relative;
-  perspective: 1000px;
-}
-.parallax-item {
-  position: absolute;
-  will-change: transform;
-}
-
-/* 歌词面板 */
-.lyrics-panel {
-  position: absolute;
-  bottom: 20px; right: 20px;
-  max-width: 40%; max-height: 50%;
-  padding: 15px;
-  background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(10px);  /* 毛玻璃效果:contentReference[oaicite:15]{index=15} */
-  overflow-y: auto;
-  color: #fff;
-  border-radius: 8px;
-}
-
-/* 专辑封面旋转动画 */
-.cover-art {
-  width: 150px; height: 150px;
-  border-radius: 8px;
-  animation: rotateCover 20s linear infinite;
-}
-@keyframes rotateCover {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* 暗黑/明亮模式 */
-.dark-mode body {
-  background-color: #000;
-  color: #fff;
-}
-
-/* 响应式布局 */
-@media (max-width: 600px) {
-  .controls {
-    flex-direction: column;
+/* Responsive Layout */
+@media (max-width: 400px) {
+  .player {
+    width: 90%;
+    padding: 15px;
   }
-  .decorative-moon, .decorative-bat {
-    display: none;
+  .controls span {
+    margin: 0 5px;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
   }
 }
