@@ -1,44 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <title> 音乐播放器 </title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- 引入 Amplitude.js -->
-  <script src="https://cdn.jsdelivr.net/npm/amplitudejs@5.3.2/dist/amplitude.js"></script>
-  <!-- 引入样式 -->
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-  <div class="player">
-    <!-- 专辑封面 -->
-    <img class="cover-art" data-amplitude-song-info="cover_art_url" alt="封面">
-    <!-- 歌曲信息 -->
-    <div class="song-info">
-      <h2 data-amplitude-song-info="name"></h2>
-      <h3 data-amplitude-song-info="artist"></h3>
-    </div>
-    <!-- 播放控制 -->
-    <div class="controls">
-      <span class="amplitude-prev"></span>
-      <span class="amplitude-play-pause"></span>
-      <span class="amplitude-next"></span>
-    </div>
-    <!-- 播放进度 -->
-    <div class="progress">
-      <span data-amplitude-current-time>0:00</span>
-      <input type="range" class="amplitude-song-slider" step="0.1"/>
-      <span data-amplitude-duration>0:00</span>
-    </div>
-    <!-- 音量控制 -->
-    <div class="volume">
-      <label for="volume-slider">音量</label>
-      <input id="volume-slider" type="range" class="amplitude-volume-slider" min="0" max="100" value="50"/>
-    </div>
-  </div>
-
-  <!-- 播放器逻辑 -->
-  <script src="js/player.js"></script>
-  <script src="drag.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>音乐播放器</title>
+    <script type="module" crossorigin src="/assets/index-De2EykMa.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-Bxb7XZAu.css">
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
 </html>
