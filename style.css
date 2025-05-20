@@ -1,0 +1,157 @@
+/* --- 全局主题变量 --- */
+:root {
+  --bg-color: #f0f0f0;
+  --text-color: #333333;
+  --button-color: #880e4f; /* 暗红色调 */
+  --accent-color: #c62828;
+}
+body.dark {
+  --bg-color: #121212;
+  --text-color: #eeeeee;
+  --button-color: #d84315;
+  --accent-color: #b71c1c;
+}
+
+/* --- 基本布局 --- */
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg-color);
+  color: var(--text-color);
+  overflow: hidden;
+  font-family: sans-serif;
+}
+#player-container {
+  position: relative;
+  text-align: center;
+  padding-top: 60px;
+  z-index: 10;
+}
+
+/* --- 背景动画 --- */
+#background {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: linear-gradient(to bottom, #301934, #000000);
+  overflow: hidden;
+  z-index: 0;
+}
+/* 月亮 */
+.moon {
+  position: absolute;
+  top: 10%;
+  right: 10%;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle at top left, #ff3d00, #bf360c);
+  animation: floatMoon 20s ease-in-out infinite alternate;
+}
+@keyframes floatMoon {
+  from { transform: translateY(0px); }
+  to { transform: translateY(20px); }
+}
+/* 飞蝙蝠 */
+.bat {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  transform: translate(-50%, -50%);
+  animation: flyBat 15s linear infinite;
+}
+@keyframes flyBat {
+  0% { transform: translate(-50%, -50%) translateX(100vw); }
+  100% { transform: translate(-50%, -50%) translateX(-10vw); }
+}
+/* 星空（闪烁星星） */
+.star {
+  position: absolute;
+  width: 3px; height: 3px;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle infinite alternate;
+}
+@keyframes twinkle {
+  from { opacity: 1; }
+  to { opacity: 0.3; }
+}
+
+/* --- 封面旋转 --- */
+.cover {
+  margin: 0 auto;
+  width: 150px; height: 150px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #f48fb1, #4a148c);
+  animation: rotateCover 20s linear infinite;
+}
+@keyframes rotateCover {
+  to { transform: rotate(360deg); }
+}
+
+/* --- 歌曲信息 --- */
+#songInfo {
+  margin: 10px 0;
+  font-size: 1.2em;
+  color: var(--text-color);
+}
+
+/* --- 控制按钮 --- */
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+.controls button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+.controls svg {
+  fill: var(--button-color);
+}
+.controls button#themeToggle svg {
+  fill: var(--accent-color);
+}
+/* 播放/暂停图标显示切换 */
+#playPause svg { vertical-align: middle; }
+#playPause.playing .icon-play { display: none; }
+#playPause.playing .icon-pause { display: inline; }
+
+/* 音量滑块样式 */
+input.amplitude-volume-slider {
+  width: 100px;
+  margin: 0 5px;
+}
+input[type=range] {
+  -webkit-appearance: none;
+  background: var(--accent-color);
+  height: 4px;
+  border-radius: 2px;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--button-color);
+}
+
+/* --- 歌词面板（毛玻璃效果）--- */
+#lyricsPanel {
+  position: absolute;
+  bottom: 20px; left: 20px;
+  width: 300px;
+  max-height: 70vh;
+  padding: 10px;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  overflow-y: auto;
+  color: var(--text-color);
+  display: none;
+}
+#lyricsPanel.visible {
+  display: block;
+}
