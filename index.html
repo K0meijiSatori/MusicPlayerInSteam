@@ -4,122 +4,10 @@
   <meta charset="UTF-8">
   <title>东方Project 露米娅风格音乐播放器</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- 引入 AmplitudeJS 库 -->
+  <!-- 引入 Amplitude.js -->
   <script src="https://cdn.jsdelivr.net/npm/amplitudejs@5.3.2/dist/amplitude.js"></script>
-  <style>
-    /* 页面整体样式 */
-    body {
-      margin: 0;
-      font-family: "Helvetica Neue", sans-serif;
-      background: #000;               /* 深黑背景 */
-      color: #eee;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    /* 播放器容器 */
-    .player {
-      background: #111;
-      padding: 20px;
-      border: 2px solid #440000;     /* 深红边框 */
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.5);
-      width: 320px;
-      text-align: center;
-    }
-    /* 专辑封面 */
-    .cover-art {
-      width: 100%;
-      border: 1px solid #550000;
-      border-radius: 6px;
-      margin-bottom: 10px;
-    }
-    /* 歌曲信息 */
-    .song-info h2 {
-      margin: 5px 0;
-      font-size: 1.2rem;
-      color: #FF6666;               /* 红色歌曲名 */
-    }
-    .song-info h3 {
-      margin: 2px 0;
-      font-size: 1rem;
-      color: #FFD700;               /* 金色艺术家名 */
-      font-weight: normal;
-    }
-    /* 控件按钮 */
-    .controls span {
-      display: inline-block;
-      margin: 0 10px;
-      width: 32px;
-      height: 32px;
-      background: #440000;
-      border-radius: 4px;
-      line-height: 32px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .controls span:hover {
-      background: #550000;
-    }
-    /* 使用伪元素显示播放/暂停等图标 */
-    .amplitude-play-pause::before {
-      content: "▶";
-      color: #FFD700;
-      font-weight: bold;
-    }
-    .amplitude-play-pause.amplitude-playing::before {
-      content: "⏸";
-      color: #FFD700;
-    }
-    .amplitude-prev::before {
-      content: "⏮";
-      color: #FFD700;
-    }
-    .amplitude-next::before {
-      content: "⏭";
-      color: #FFD700;
-    }
-    /* 进度条和时间 */
-    .progress {
-      margin: 10px 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 0.9rem;
-    }
-    .progress input[type="range"] {
-      flex: 1;
-      margin: 0 5px;
-    }
-    /* 音量控制 */
-    .volume {
-      margin-top: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.9rem;
-    }
-    .volume label {
-      margin-right: 5px;
-    }
-    .volume input[type="range"] {
-      width: 100px;
-    }
-    /* 响应式调整 */
-    @media (max-width: 400px) {
-      .player {
-        width: 90%;
-        padding: 15px;
-      }
-      .controls span {
-        margin: 0 5px;
-        width: 28px;
-        height: 28px;
-        line-height: 28px;
-      }
-    }
-  </style>
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <div class="player">
@@ -130,7 +18,7 @@
       <h2 data-amplitude-song-info="name"></h2>
       <h3 data-amplitude-song-info="artist"></h3>
     </div>
-    <!-- 播放/暂停、上一曲、下一曲 -->
+    <!-- 播放控制 -->
     <div class="controls">
       <span class="amplitude-prev"></span>
       <span class="amplitude-play-pause"></span>
@@ -142,42 +30,14 @@
       <input type="range" class="amplitude-song-slider" step="0.1"/>
       <span data-amplitude-duration>0:00</span>
     </div>
-    <!-- 音量滑块 -->
+    <!-- 音量控制 -->
     <div class="volume">
       <label for="volume-slider">音量</label>
       <input id="volume-slider" type="range" class="amplitude-volume-slider" min="0" max="100" value="50"/>
     </div>
   </div>
 
-  <!-- 初始化 AmplitudeJS -->
-  <script>
-    Amplitude.init({
-      "songs": [
-        {
-          "name": "曲目一",
-          "artist": "艺术家A",
-          "album": "专辑X",
-          "url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-          "cover_art_url": "https://source.unsplash.com/500x500/?night+sky"
-        },
-        {
-          "name": "曲目二",
-          "artist": "艺术家B",
-          "album": "专辑Y",
-          "url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
-          "cover_art_url": "https://source.unsplash.com/500x500/?fullmoon"
-        },
-        {
-          "name": "曲目三",
-          "artist": "艺术家C",
-          "album": "专辑Z",
-          "url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
-          "cover_art_url": "https://source.unsplash.com/500x500/?starry-night"
-        }
-      ],
-      /* 可以根据需要设置默认音量等其它参数 */
-      "volume": 50
-    });
-  </script>
+  <!-- 播放器逻辑 -->
+  <script src="js/player.js"></script>
 </body>
 </html>
